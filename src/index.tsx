@@ -16,17 +16,12 @@ interface SquareProps {
 /**
  * A square on the board
  */
-class Square extends React.Component<SquareProps> {
-  /**
-   * Render an individual square on the board
-   */
-  render() {
-    return (
-      <button className="square" onClick={this.props.onClick}>
-        {this.props.value}
-      </button>
-    );
-  }
+function Square(props: SquareProps) {
+  return (
+    <button className="square" onClick={props.onClick}>
+      {props.value}
+    </button>
+  );
 }
 
 /**

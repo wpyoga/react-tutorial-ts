@@ -9,6 +9,7 @@ This is the [React tutorial](https://reactjs.org/tutorial/tutorial.html), done i
 1. Make the squares [recognize clicks](https://reactjs.org/tutorial/tutorial.html#making-an-interactive-component)
 1. Make the squares [stateful](https://reactjs.org/tutorial/tutorial.html#making-an-interactive-component) and respond to clicks
 1. [Lift state up](https://reactjs.org/tutorial/tutorial.html#lifting-state-up) from the squares to the game board
+1. Implement squares as [function components](https://reactjs.org/tutorial/tutorial.html#function-components)
 
 ## Bootstrap process
 

@@ -7,6 +7,7 @@ This is the [React tutorial](https://reactjs.org/tutorial/tutorial.html), done i
 1. [Set up](https://reactjs.org/tutorial/tutorial.html#setup-option-2-local-development-environment) the project
 1. [Pass data](https://reactjs.org/tutorial/tutorial.html#passing-data-through-props) through props
 1. Make the squares [recognize clicks](https://reactjs.org/tutorial/tutorial.html#making-an-interactive-component)
+1. Make the squares [stateful](https://reactjs.org/tutorial/tutorial.html#making-an-interactive-component) and respond to clicks
 
 ## Bootstrap process
 

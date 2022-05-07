@@ -12,19 +12,33 @@ interface SquareProps {
 }
 
 /**
+ * The state maintained by the Square
+ */
+interface SquareState {
+  value: string;
+}
+
+/**
  * A square on the board
  */
-class Square extends React.Component<SquareProps> {
+class Square extends React.Component<SquareProps, SquareState> {
+  /**
+   * Default state of the Square
+   *
+   * @remarks
+   * The Square is initially empty
+   */
+  state: SquareState = {
+    value: "",
+  };
+
   /**
    * Render an individual square on the board
    */
   render() {
     return (
-      <button
-        className="square"
-        onClick={() => console.log(`click ${this.props.value}`)}
-      >
-        {this.props.value}
+      <button className="square" onClick={() => this.setState({ value: "X" })}>
+        {this.state.value}
       </button>
     );
   }

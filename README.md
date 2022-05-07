@@ -1,6 +1,18 @@
-# Getting Started with Create React App
+# Tutorial: Intro to React (in TypeScript)
+
+This is the [React tutorial](https://reactjs.org/tutorial/tutorial.html), done in TypeScript. Comments are written in [TSDoc](https://tsdoc.org/) style.
+
+## Stages
+
+1. [Set up](https://reactjs.org/tutorial/tutorial.html#setup-option-2-local-development-environment) the project
+
+## Bootstrap process
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+```
+$ yarn create react-app --template=typescript
+```
 
 ## Available Scripts
 

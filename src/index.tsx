@@ -34,6 +34,7 @@ function Square(props: SquareProps) {
  */
 interface BoardState {
   squares: string[];
+  xIsNext: boolean;
 }
 
 /**
@@ -44,10 +45,12 @@ class Board extends React.Component<{}, BoardState> {
    * Default state of the Board
    *
    * @remarks
-   * The squares are initially empty
+   * The squares are initially empty.
+   * The first player is X, and O is next, alternating at each turn.
    */
   state: BoardState = {
     squares: Array(9).fill(""),
+    xIsNext: true,
   };
 
   /**
@@ -71,7 +74,7 @@ class Board extends React.Component<{}, BoardState> {
    * 9 squares (3x3) are drawn on the board
    */
   render() {
-    const status = "Next player: X";
+    const status = `Next player: ${this.state.xIsNext ? "X" : "O"}`;
 
     return (
       <div>
@@ -104,8 +107,11 @@ class Board extends React.Component<{}, BoardState> {
    */
   handleClick(i: number) {
     const squares = this.state.squares.slice();
-    squares[i] = "X";
-    this.setState({ squares: squares });
+    squares[i] = this.state.xIsNext ? "X" : "O";
+    this.setState({
+      squares: squares,
+      xIsNext: !this.state.xIsNext,
+    });
   }
 }
 

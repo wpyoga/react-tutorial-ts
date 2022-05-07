@@ -74,7 +74,14 @@ class Board extends React.Component<{}, BoardState> {
    * 9 squares (3x3) are drawn on the board
    */
   render() {
-    const status = `Next player: ${this.state.xIsNext ? "X" : "O"}`;
+    const winner = calculateWinner(this.state.squares);
+
+    let status;
+    if (winner != "") {
+      status = `Winner: ${winner}`;
+    } else {
+      status = `Next player: ${this.state.xIsNext ? "X" : "O"}`;
+    }
 
     return (
       <div>
@@ -105,12 +112,13 @@ class Board extends React.Component<{}, BoardState> {
    * Because handleClick() is implemented in the Board,
    * "this" refers to the Board, not the Square.
    *
-   * If the square is already filled, further clicks are ignored.
+   * If the square is already filled, or if a winner has been determined,
+   * further clicks are ignored.
    */
   handleClick(i: number) {
     const squares = this.state.squares.slice();
 
-    if (squares[i] != "") {
+    if (squares[i] != "" || calculateWinner(squares) != "") {
       return;
     }
 
@@ -139,6 +147,37 @@ class Game extends React.Component {
       </div>
     );
   }
+}
+
+/**
+ * Returns "X" or "O" if a winner can be determined, or an empty string otherwise
+ *
+ * @params squares - State of squares, from which the winner is determined
+ */
+function calculateWinner(squares: string[]) {
+  const winningLines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  for (let i = 0; i < winningLines.length; ++i) {
+    const [a, b, c] = winningLines[i];
+    if (
+      squares[a] != "" &&
+      squares[a] === squares[b] &&
+      squares[a] === squares[c]
+    ) {
+      return squares[a];
+    }
+  }
+
+  return "";
 }
 
 // Basic boilerplate to draw the game on the page

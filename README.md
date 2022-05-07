@@ -12,6 +12,7 @@ This is the [React tutorial](https://reactjs.org/tutorial/tutorial.html), done i
 1. Implement squares as [function components](https://reactjs.org/tutorial/tutorial.html#function-components)
 1. Let X and O [take turns](https://reactjs.org/tutorial/tutorial.html#taking-turns) playing the game
 1. Filled squares [are final](https://reactjs.org/tutorial/tutorial.html#declaring-a-winner)
+1. [Determine the winner](https://reactjs.org/tutorial/tutorial.html#declaring-a-winner) at every turn
 
 ## Bootstrap process
 

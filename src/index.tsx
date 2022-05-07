@@ -19,7 +19,14 @@ class Square extends React.Component<SquareProps> {
    * Render an individual square on the board
    */
   render() {
-    return <button className="square">{this.props.value}</button>;
+    return (
+      <button
+        className="square"
+        onClick={() => console.log(`click ${this.props.value}`)}
+      >
+        {this.props.value}
+      </button>
+    );
   }
 }
 

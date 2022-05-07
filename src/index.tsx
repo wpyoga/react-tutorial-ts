@@ -103,10 +103,17 @@ class Board extends React.Component<{}, BoardState> {
    *
    * @remarks
    * Because handleClick() is implemented in the Board,
-   * "this" refers to the Board, not the Square
+   * "this" refers to the Board, not the Square.
+   *
+   * If the square is already filled, further clicks are ignored.
    */
   handleClick(i: number) {
     const squares = this.state.squares.slice();
+
+    if (squares[i] != "") {
+      return;
+    }
+
     squares[i] = this.state.xIsNext ? "X" : "O";
     this.setState({
       squares: squares,

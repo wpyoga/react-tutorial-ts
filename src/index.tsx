@@ -6,55 +6,67 @@ import "./index.css";
  * The props object required by Square
  *
  * @param value - Value to be displayed in the Square
+ * @param onClick - Function to be called when Square is clicked
  */
 interface SquareProps {
-  value: number;
-}
-
-/**
- * The state maintained by the Square
- */
-interface SquareState {
   value: string;
+  onClick: () => void;
 }
 
 /**
  * A square on the board
  */
-class Square extends React.Component<SquareProps, SquareState> {
-  /**
-   * Default state of the Square
-   *
-   * @remarks
-   * The Square is initially empty
-   */
-  state: SquareState = {
-    value: "",
-  };
-
+class Square extends React.Component<SquareProps> {
   /**
    * Render an individual square on the board
    */
   render() {
     return (
-      <button className="square" onClick={() => this.setState({ value: "X" })}>
-        {this.state.value}
+      <button className="square" onClick={this.props.onClick}>
+        {this.props.value}
       </button>
     );
   }
 }
 
 /**
+ * The state maintained by the Board
+ *
+ * @remarks
+ * Make sure squares is an array of 9 strings.
+ * TypeScript does not have a fixed-length array type, so it is possible
+ * to get unexpected results if the array length is not kept precisely 9.
+ */
+interface BoardState {
+  squares: string[];
+}
+
+/**
  * The game board
  */
-class Board extends React.Component {
+class Board extends React.Component<{}, BoardState> {
+  /**
+   * Default state of the Board
+   *
+   * @remarks
+   * The squares are initially empty
+   */
+  state: BoardState = {
+    squares: Array(9).fill(""),
+  };
+
   /**
    * Render a Square on the board
    *
    * @param i - Index of the square to be rendered
    */
   renderSquare(i: number) {
-    return <Square value={i} />;
+    return (
+      <Square
+        value={this.state.squares[i]}
+        onClick={() => this.handleClick(i)}
+      />
+    );
   }
 
   /**
@@ -86,6 +98,19 @@ class Board extends React.Component {
         </div>
       </div>
     );
+  }
+
+  /**
+   * Handle clicks on Square
+   *
+   * @remarks
+   * Because handleClick() is implemented in the Board,
+   * "this" refers to the Board, not the Square
+   */
+  handleClick(i: number) {
+    const squares = this.state.squares.slice();
+    squares[i] = "X";
+    this.setState({ squares: squares });
   }
 }
 

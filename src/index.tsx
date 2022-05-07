@@ -3,14 +3,23 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 
 /**
+ * The props object required by Square
+ *
+ * @param value - Value to be displayed in the Square
+ */
+interface SquareProps {
+  value: number;
+}
+
+/**
  * A square on the board
  */
-class Square extends React.Component {
+class Square extends React.Component<SquareProps> {
   /**
    * Render an individual square on the board
    */
   render() {
-    return <button className="square" />;
+    return <button className="square">{this.props.value}</button>;
   }
 }
 
@@ -24,7 +33,7 @@ class Board extends React.Component {
    * @param i - Index of the square to be rendered
    */
   renderSquare(i: number) {
-    return <Square />;
+    return <Square value={i} />;
   }
 
   /**

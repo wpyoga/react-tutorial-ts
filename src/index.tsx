@@ -91,7 +91,7 @@ class Board extends React.Component<BoardProps> {
  * to get unexpected results if the array length is not kept precisely 9.
  */
 interface GameState {
-  history: { squares: string[] }[];
+  history: { squares: string[]; col: number; row: number; player: string }[];
   stepNumber: number;
   xIsNext: boolean;
 }
@@ -108,7 +108,7 @@ class Game extends React.Component<{}, GameState> {
    * The first player is X, and O is next, alternating at each turn.
    */
   state: GameState = {
-    history: [{ squares: Array(9).fill("") }],
+    history: [{ squares: Array(9).fill(""), col: -1, row: -1, player: "" }],
     stepNumber: 0,
     xIsNext: true,
   };
@@ -133,7 +133,9 @@ class Game extends React.Component<{}, GameState> {
       if (move === 0) {
         desc = "Go to game start";
       } else {
-        desc = `Go to move #${move}`;
+        desc =
+          `Go to move #${move}: ` +
+          `${snapshot.player} (${snapshot.col},${snapshot.row})`;
       }
 
       return (
@@ -190,7 +192,14 @@ class Game extends React.Component<{}, GameState> {
 
     squares[i] = this.state.xIsNext ? "X" : "O";
     this.setState({
-      history: history.concat([{ squares: squares }]),
+      history: history.concat([
+        {
+          squares: squares,
+          col: i % 3,
+          row: Math.floor(i / 3),
+          player: squares[i],
+        },
+      ]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
     });

@@ -16,6 +16,7 @@ This is the [React tutorial](https://reactjs.org/tutorial/tutorial.html), done i
 1. [Keep a history](https://reactjs.org/tutorial/tutorial.html#lifting-state-up-again) of moves
 1. [Lift state up](https://reactjs.org/tutorial/tutorial.html#lifting-state-up-again) from the board to the game object
 1. Show past moves and [allow players to modify them](https://reactjs.org/tutorial/tutorial.html#implementing-time-travel)
+1. [Show position](https://reactjs.org/tutorial/tutorial.html#wrapping-up) of each past move
 
 ## Bootstrap process
 

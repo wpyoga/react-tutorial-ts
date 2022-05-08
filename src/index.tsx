@@ -25,48 +25,31 @@ function Square(props: SquareProps) {
 }
 
 /**
- * The state maintained by the Board
+ * The props passed to the Board
  *
- * @remarks
- * Keeps history of moves, where each move is an array of 9 strings.
- * TypeScript does not have a fixed-length array type, so it is possible
- * to get unexpected results if the array length is not kept precisely 9.
+ * @param squares - Data to be rendered by Squares
+ * @param onClick - Click handler to be passed to Square
  */
-interface BoardState {
-  history: { squares: string[] }[];
-  xIsNext: boolean;
+interface BoardProps {
+  squares: string[];
+  onClick: (i: number) => void;
 }
 
 /**
  * The game board
  */
-class Board extends React.Component<{}, BoardState> {
-  /**
-   * Default state of the Board
-   *
-   * @remarks
-   * In the initial state, the squares are empty.
-   * The first player is X, and O is next, alternating at each turn.
-   */
-  state: BoardState = {
-    history: [{ squares: Array(9).fill("") }],
-    xIsNext: true,
-  };
-
+class Board extends React.Component<BoardProps> {
   /**
    * Render a Square on the board
-   *
-   * @remarks
-   * Only the latest state is rendered
    *
    * @param i - Index of the square to be rendered
    */
   renderSquare(i: number) {
-    const history = this.state.history;
-    const current = history[history.length - 1];
-
     return (
-      <Square value={current.squares[i]} onClick={() => this.handleClick(i)} />
+      <Square
+        value={this.props.squares[i]}
+        onClick={() => this.props.onClick(i)}
+      />
     );
   }
 
@@ -77,20 +60,8 @@ class Board extends React.Component<{}, BoardState> {
    * 9 squares (3x3) are drawn on the board
    */
   render() {
-    const history = this.state.history;
-    const current = history[history.length - 1];
-    const winner = calculateWinner(current.squares);
-
-    let status;
-    if (winner != "") {
-      status = `Winner: ${winner}`;
-    } else {
-      status = `Next player: ${this.state.xIsNext ? "X" : "O"}`;
-    }
-
     return (
       <div>
-        <div className="status">{status}</div>
         <div className="board-row">
           {this.renderSquare(0)}
           {this.renderSquare(1)}
@@ -105,6 +76,66 @@ class Board extends React.Component<{}, BoardState> {
           {this.renderSquare(6)}
           {this.renderSquare(7)}
           {this.renderSquare(8)}
+        </div>
+      </div>
+    );
+  }
+}
+
+/**
+ * The state maintained by the Game
+ *
+ * @remarks
+ * Keeps history of moves, where each move is an array of 9 strings.
+ * TypeScript does not have a fixed-length array type, so it is possible
+ * to get unexpected results if the array length is not kept precisely 9.
+ */
+interface GameState {
+  history: { squares: string[] }[];
+  xIsNext: boolean;
+}
+
+/**
+ * The game itself, modeled as an object
+ */
+class Game extends React.Component<{}, GameState> {
+  /**
+   * Default state of the Board
+   *
+   * @remarks
+   * In the initial state, the squares are empty.
+   * The first player is X, and O is next, alternating at each turn.
+   */
+  state: GameState = {
+    history: [{ squares: Array(9).fill("") }],
+    xIsNext: true,
+  };
+
+  /**
+   * Render the game on the page
+   */
+  render() {
+    const history = this.state.history;
+    const current = history[history.length - 1];
+    const winner = calculateWinner(current.squares);
+
+    let status;
+    if (winner != "") {
+      status = `Winner: ${winner}`;
+    } else {
+      status = `Next player: ${this.state.xIsNext ? "X" : "O"}`;
+    }
+
+    return (
+      <div className="game">
+        <div className="game-board">
+          <Board
+            squares={current.squares}
+            onClick={(i) => this.handleClick(i)}
+          />
+        </div>
+        <div className="game-info">
+          <div>{status}</div>
         </div>
       </div>
     );
@@ -134,25 +165,6 @@ class Board extends React.Component<{}, BoardState> {
       history: history.concat([{ squares: squares }]),
       xIsNext: !this.state.xIsNext,
     });
-  }
-}
-
-/**
- * The game itself, modeled as an object
- */
-class Game extends React.Component {
-  /**
-   * Render the game on the page
-   */
-  render() {
-    return (
-      <div className="game">
-        <div className="game-board">
-          <Board />
-        </div>
-        <div className="game-info">{/* TODO */}</div>
-      </div>
-    );
   }
 }
 

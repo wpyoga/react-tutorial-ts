@@ -40,7 +40,7 @@ function Square(props: SquareProps) {
 interface BoardProps {
   squares: string[];
   onClick: (i: number) => void;
-  highlightedSquare: number;
+  highlightedSquares: number[];
 }
 
 /**
@@ -58,7 +58,7 @@ class Board extends React.Component<BoardProps> {
         key={i}
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
-        isHighlighted={i === this.props.highlightedSquare}
+        isHighlighted={this.props.highlightedSquares.includes(i)}
       />
     );
   }
@@ -132,7 +132,7 @@ class Game extends React.Component<{}, GameState> {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
+    const { winner, winningLine } = calculateWinner(current.squares);
 
     let status;
     if (winner != "") {
@@ -169,12 +169,12 @@ class Game extends React.Component<{}, GameState> {
       moves = moves.reverse();
     }
 
-    let highlightedSquare;
-    if (this.state.selectedMove >= 0) {
+    let highlightedSquares = Array<number>();
+    if (winner != "") {
+      highlightedSquares = winningLine;
+    } else if (this.state.selectedMove >= 0) {
       const selectedHistory = history[this.state.selectedMove];
-      highlightedSquare = selectedHistory.col + selectedHistory.row * 3;
-    } else {
-      highlightedSquare = -1;
+      highlightedSquares = [selectedHistory.col + selectedHistory.row * 3];
     }
 
     const sortButtonLabel = this.state.sortAscending
@@ -187,7 +187,7 @@ class Game extends React.Component<{}, GameState> {
           <Board
             squares={current.squares}
             onClick={(i) => this.handleClick(i)}
-            highlightedSquare={highlightedSquare}
+            highlightedSquares={highlightedSquares}
           />
         </div>
         <div className="game-info">
@@ -236,7 +236,7 @@ class Game extends React.Component<{}, GameState> {
     const current = history[history.length - 1];
     const squares = current.squares.slice();
 
-    if (squares[i] != "" || calculateWinner(squares) != "") {
+    if (squares[i] != "" || calculateWinner(squares).winner != "") {
       return;
     }
 
@@ -261,8 +261,14 @@ class Game extends React.Component<{}, GameState> {
  * Returns "X" or "O" if a winner can be determined, or an empty string otherwise
  *
  * @params squares - State of squares, from which the winner is determined
+ *
+ * @returns An object containing winner, either "X" or "O" if there is a winner;
+ * and winningLine, an array of the winning square numbers if there is a winner
  */
-function calculateWinner(squares: string[]) {
+function calculateWinner(squares: string[]): {
+  winner: string;
+  winningLine: number[];
+} {
   const winningLines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -281,11 +287,11 @@ function calculateWinner(squares: string[]) {
       squares[a] === squares[b] &&
       squares[a] === squares[c]
     ) {
-      return squares[a];
+      return { winner: squares[a] + "", winningLine: winningLines[i].slice() };
     }
   }
 
-  return "";
+  return { winner: "", winningLine: [-1, -1, -1] };
 }
 
 // Basic boilerplate to draw the game on the page

@@ -18,6 +18,7 @@ This is the [React tutorial](https://reactjs.org/tutorial/tutorial.html), done i
 1. Show past moves and [allow players to modify them](https://reactjs.org/tutorial/tutorial.html#implementing-time-travel)
 1. [Show position](https://reactjs.org/tutorial/tutorial.html#wrapping-up) of each past move
 1. [Show currently selected move](https://reactjs.org/tutorial/tutorial.html#wrapping-up) in bold
+1. Highlight currently selected move on the board
 
 ## Bootstrap process
 

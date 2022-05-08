@@ -7,18 +7,24 @@ import "./index.css";
  *
  * @param value - Value to be displayed in the Square
  * @param onClick - Function to be called when Square is clicked
+ * @param isHighlighted - Controls whether the Square is highlighted
  */
 interface SquareProps {
   value: string;
   onClick: () => void;
+  isHighlighted: boolean;
 }
 
 /**
  * A square on the board
  */
 function Square(props: SquareProps) {
+  const buttonStyle: React.CSSProperties = props.isHighlighted
+    ? { backgroundColor: "lightgray" }
+    : {};
+
   return (
-    <button className="square" onClick={props.onClick}>
+    <button className="square" onClick={props.onClick} style={buttonStyle}>
       {props.value}
     </button>
   );
@@ -29,10 +35,12 @@ function Square(props: SquareProps) {
  *
  * @param squares - Data to be rendered by Squares
  * @param onClick - Click handler to be passed to Square
+ * @param highlightedSquare - The Square to be highlighted
  */
 interface BoardProps {
   squares: string[];
   onClick: (i: number) => void;
+  highlightedSquare: number;
 }
 
 /**
@@ -49,6 +57,7 @@ class Board extends React.Component<BoardProps> {
       <Square
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
+        isHighlighted={i === this.props.highlightedSquare}
       />
     );
   }
@@ -160,12 +169,21 @@ class Game extends React.Component<{}, GameState> {
       );
     });
 
+    let highlightedSquare;
+    if (this.state.selectedMove >= 0) {
+      const selectedHistory = history[this.state.selectedMove];
+      highlightedSquare = selectedHistory.col + selectedHistory.row * 3;
+    } else {
+      highlightedSquare = -1;
+    }
+
     return (
       <div className="game">
         <div className="game-board">
           <Board
             squares={current.squares}
             onClick={(i) => this.handleClick(i)}
+            highlightedSquare={highlightedSquare}
           />
         </div>
         <div className="game-info">

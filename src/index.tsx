@@ -28,12 +28,12 @@ function Square(props: SquareProps) {
  * The state maintained by the Board
  *
  * @remarks
- * Make sure squares is an array of 9 strings.
+ * Keeps history of moves, where each move is an array of 9 strings.
  * TypeScript does not have a fixed-length array type, so it is possible
  * to get unexpected results if the array length is not kept precisely 9.
  */
 interface BoardState {
-  squares: string[];
+  history: { squares: string[] }[];
   xIsNext: boolean;
 }
 
@@ -45,25 +45,28 @@ class Board extends React.Component<{}, BoardState> {
    * Default state of the Board
    *
    * @remarks
-   * The squares are initially empty.
+   * In the initial state, the squares are empty.
    * The first player is X, and O is next, alternating at each turn.
    */
   state: BoardState = {
-    squares: Array(9).fill(""),
+    history: [{ squares: Array(9).fill("") }],
     xIsNext: true,
   };
 
   /**
    * Render a Square on the board
    *
+   * @remarks
+   * Only the latest state is rendered
+   *
    * @param i - Index of the square to be rendered
    */
   renderSquare(i: number) {
+    const history = this.state.history;
+    const current = history[history.length - 1];
+
     return (
-      <Square
-        value={this.state.squares[i]}
-        onClick={() => this.handleClick(i)}
-      />
+      <Square value={current.squares[i]} onClick={() => this.handleClick(i)} />
     );
   }
 
@@ -74,7 +77,9 @@ class Board extends React.Component<{}, BoardState> {
    * 9 squares (3x3) are drawn on the board
    */
   render() {
-    const winner = calculateWinner(this.state.squares);
+    const history = this.state.history;
+    const current = history[history.length - 1];
+    const winner = calculateWinner(current.squares);
 
     let status;
     if (winner != "") {
@@ -116,7 +121,9 @@ class Board extends React.Component<{}, BoardState> {
    * further clicks are ignored.
    */
   handleClick(i: number) {
-    const squares = this.state.squares.slice();
+    const history = this.state.history;
+    const current = history[history.length - 1];
+    const squares = current.squares.slice();
 
     if (squares[i] != "" || calculateWinner(squares) != "") {
       return;
@@ -124,7 +131,7 @@ class Board extends React.Component<{}, BoardState> {
 
     squares[i] = this.state.xIsNext ? "X" : "O";
     this.setState({
-      squares: squares,
+      history: history.concat([{ squares: squares }]),
       xIsNext: !this.state.xIsNext,
     });
   }

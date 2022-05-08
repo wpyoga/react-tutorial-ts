@@ -13,6 +13,7 @@ This is the [React tutorial](https://reactjs.org/tutorial/tutorial.html), done i
 1. Let X and O [take turns](https://reactjs.org/tutorial/tutorial.html#taking-turns) playing the game
 1. Filled squares [are final](https://reactjs.org/tutorial/tutorial.html#declaring-a-winner)
 1. [Determine the winner](https://reactjs.org/tutorial/tutorial.html#declaring-a-winner) at every turn
+1. [Keep a history](https://reactjs.org/tutorial/tutorial.html#lifting-state-up-again) of moves
 
 ## Bootstrap process
 

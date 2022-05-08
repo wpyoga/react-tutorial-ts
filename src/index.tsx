@@ -89,10 +89,14 @@ class Board extends React.Component<BoardProps> {
  * Keeps history of moves, where each move is an array of 9 strings.
  * TypeScript does not have a fixed-length array type, so it is possible
  * to get unexpected results if the array length is not kept precisely 9.
+ *
+ * When a historical move is selected, its number is kept in the state,
+ * so that the button can be shown in bold.
  */
 interface GameState {
   history: { squares: string[]; col: number; row: number; player: string }[];
   stepNumber: number;
+  selectedMove: number;
   xIsNext: boolean;
 }
 
@@ -110,11 +114,15 @@ class Game extends React.Component<{}, GameState> {
   state: GameState = {
     history: [{ squares: Array(9).fill(""), col: -1, row: -1, player: "" }],
     stepNumber: 0,
+    selectedMove: -1,
     xIsNext: true,
   };
 
   /**
    * Render the game on the page
+   *
+   * @remarks
+   * The currently selected item in the move list is shown in bold
    */
   render() {
     const history = this.state.history;
@@ -138,9 +146,16 @@ class Game extends React.Component<{}, GameState> {
           `${snapshot.player} (${snapshot.col},${snapshot.row})`;
       }
 
+      let buttonStyle: React.CSSProperties = {};
+      if (move === this.state.selectedMove) {
+        buttonStyle = { fontWeight: "bold" };
+      }
+
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button onClick={() => this.jumpTo(move)} style={buttonStyle}>
+            {desc}
+          </button>
         </li>
       );
     });
@@ -167,6 +182,7 @@ class Game extends React.Component<{}, GameState> {
   jumpTo(step: number) {
     this.setState({
       stepNumber: step,
+      selectedMove: step,
       xIsNext: step % 2 === 0,
     });
   }
@@ -201,6 +217,7 @@ class Game extends React.Component<{}, GameState> {
         },
       ]),
       stepNumber: history.length,
+      selectedMove: -1,
       xIsNext: !this.state.xIsNext,
     });
   }

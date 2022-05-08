@@ -20,6 +20,7 @@ This is the [React tutorial](https://reactjs.org/tutorial/tutorial.html), done i
 1. [Show currently selected move](https://reactjs.org/tutorial/tutorial.html#wrapping-up) in bold
 1. Highlight currently selected move on the board
 1. Render board [using two loops](https://reactjs.org/tutorial/tutorial.html#wrapping-up)
+1. Allow [sorting past moves](https://reactjs.org/tutorial/tutorial.html#wrapping-up) in ascending or descending order
 
 ## Bootstrap process
 

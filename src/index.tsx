@@ -95,6 +95,7 @@ class Board extends React.Component<BoardProps> {
  */
 interface GameState {
   history: { squares: string[]; col: number; row: number; player: string }[];
+  sortAscending: boolean;
   stepNumber: number;
   selectedMove: number;
   xIsNext: boolean;
@@ -113,6 +114,7 @@ class Game extends React.Component<{}, GameState> {
    */
   state: GameState = {
     history: [{ squares: Array(9).fill(""), col: -1, row: -1, player: "" }],
+    sortAscending: true,
     stepNumber: 0,
     selectedMove: -1,
     xIsNext: true,
@@ -122,7 +124,10 @@ class Game extends React.Component<{}, GameState> {
    * Render the game on the page
    *
    * @remarks
-   * The currently selected item in the move list is shown in bold
+   * The currently selected item in the move list is shown in bold.
+   *
+   * Passing this.reverseSortOrder() as an arrow function ensures that
+   * "this" is the Game object.
    */
   render() {
     const history = this.state.history;
@@ -136,7 +141,7 @@ class Game extends React.Component<{}, GameState> {
       status = `Next player: ${this.state.xIsNext ? "X" : "O"}`;
     }
 
-    const moves = history.map((snapshot, move) => {
+    let moves = history.map((snapshot, move) => {
       let desc;
       if (move === 0) {
         desc = "Go to game start";
@@ -160,6 +165,10 @@ class Game extends React.Component<{}, GameState> {
       );
     });
 
+    if (!this.state.sortAscending) {
+      moves = moves.reverse();
+    }
+
     let highlightedSquare;
     if (this.state.selectedMove >= 0) {
       const selectedHistory = history[this.state.selectedMove];
@@ -167,6 +176,10 @@ class Game extends React.Component<{}, GameState> {
     } else {
       highlightedSquare = -1;
     }
+
+    const sortButtonLabel = this.state.sortAscending
+      ? "Sort descending"
+      : "Sort ascending";
 
     return (
       <div className="game">
@@ -179,10 +192,22 @@ class Game extends React.Component<{}, GameState> {
         </div>
         <div className="game-info">
           <div>{status}</div>
+          <button onClick={() => this.reverseSortOrder()}>
+            {sortButtonLabel}
+          </button>
           <ol>{moves}</ol>
         </div>
       </div>
     );
+  }
+
+  /**
+   * Reverse sort order
+   */
+  reverseSortOrder() {
+    this.setState({
+      sortAscending: !this.state.sortAscending,
+    });
   }
 
   /**

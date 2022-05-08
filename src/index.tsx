@@ -126,6 +126,8 @@ class Game extends React.Component<{}, GameState> {
    * @remarks
    * The currently selected item in the move list is shown in bold.
    *
+   * A message is shown if the game ends in a draw, or if there is a winner.
+   *
    * Passing this.reverseSortOrder() as an arrow function ensures that
    * "this" is the Game object.
    */
@@ -137,6 +139,8 @@ class Game extends React.Component<{}, GameState> {
     let status;
     if (winner != "") {
       status = `Winner: ${winner}`;
+    } else if (this.state.stepNumber === 9) {
+      status = "Game ends in a Draw";
     } else {
       status = `Next player: ${this.state.xIsNext ? "X" : "O"}`;
     }

@@ -22,6 +22,7 @@ This is the [React tutorial](https://reactjs.org/tutorial/tutorial.html), done i
 1. Render board [using two loops](https://reactjs.org/tutorial/tutorial.html#wrapping-up)
 1. Allow [sorting past moves](https://reactjs.org/tutorial/tutorial.html#wrapping-up) in ascending or descending order
 1. [Highlight winning squares](https://reactjs.org/tutorial/tutorial.html#wrapping-up)
+1. [Show message](https://reactjs.org/tutorial/tutorial.html#wrapping-up) if game ends in a draw
 
 ## Bootstrap process
 
